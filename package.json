@@ -17,5 +17,10 @@
   "bugs": {
     "url": "https://github.com/Zerchito/shopping-cart-api/issues"
   },
-  "homepage": "https://github.com/Zerchito/shopping-cart-api#readme"
+  "homepage": "https://github.com/Zerchito/shopping-cart-api#readme",
+  "dependencies": {
+    "dotenv": "^17.2.3",
+    "express": "^5.2.1",
+    "mongoose": "^9.0.2"
+  }
 }
