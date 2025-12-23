@@ -17,10 +17,25 @@ export class CartService {
     }
 
     addItem(cart: Cart, item: CartItem): Cart {
-        const updatedItems = [...cart.items, item];
+        const existingItem = cart.items.find(
+            (i) => i.productId === item.productId
+        );
+
+        if (existingItem) {
+            const updatedItems = cart.items.map((i) =>
+                i.productId === item.productId
+                    ? { ...i, quantity: i.quantity + item.quantity }
+                    : i
+            );
+
+            return {
+                items: updatedItems,
+                totalItems: cart.totalItems + item.quantity
+            };
+        }
 
         return {
-            items: updatedItems,
+            items: [...cart.items, item],
             totalItems: cart.totalItems + item.quantity
         };
     }
