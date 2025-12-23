@@ -43,4 +43,23 @@ export class CartService {
       totalItems: cart.totalItems + item.quantity
     };
   }
+
+  removeItem(cart: Cart, productId: string): Cart {
+    const itemToRemove = cart.items.find(
+      (item) => item.productId === productId
+    );
+
+    if (!itemToRemove) {
+      throw new Error('Item not found in cart');
+    }
+
+    const updatedItems = cart.items.filter(
+      (item) => item.productId !== productId
+    );
+
+    return {
+      items: updatedItems,
+      totalItems: cart.totalItems - itemToRemove.quantity
+    };
+  }
 }
