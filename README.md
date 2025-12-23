@@ -204,12 +204,6 @@ feat(api): add cart controller
 
 ---
 
-## 👤 Author
-
-Developed as a technical exercise for backend interviews.
-
----
-
 ## ✅ Possible Improvements
 
 - API integration tests using `supertest`
