@@ -1,4 +1,6 @@
 import { Cart, CartItem } from "../domain/cart/cart.types";
+import { InvalidQuantityError } from "../domain/cart/errors/invalid-quantity.error";
+import { ItemNotFoundError } from "../domain/cart/errors/item-not-found.error";
 
 export class CartService {
   createCart(): Cart {
@@ -10,7 +12,7 @@ export class CartService {
 
   addItem(cart: Cart, item: CartItem): Cart {
     if (item.quantity <= 0) {
-      throw new Error('Quantity must be greater than zero');
+      throw new InvalidQuantityError();
     }
 
     const existingItem = cart.items.find(
@@ -42,7 +44,7 @@ export class CartService {
     );
 
     if (!itemToRemove) {
-      throw new Error('Item not found in cart');
+      throw new ItemNotFoundError();
     }
 
     const updatedItems = cart.items.filter(
