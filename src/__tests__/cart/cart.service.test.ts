@@ -154,4 +154,21 @@ describe('CartService', () => {
       ).toThrow('Quantity must be greater than zero');
     });
   });
+
+  describe('CartService - clear cart', () => {
+    it('should remove all items from the cart', () => {
+      const cartService = new CartService();
+      const cart = cartService.createCart();
+
+      const cartWithItems = cartService.addItem(cart, {
+        productId: 'product-1',
+        quantity: 3
+      });
+
+      const clearedCart = cartService.clearCart(cartWithItems);
+
+      expect(clearedCart.items).toEqual([]);
+      expect(clearedCart.totalItems).toBe(0);
+    });
+  });
 })
