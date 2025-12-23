@@ -1,12 +1,4 @@
-type CartItem = {
-  productId: string;
-  quantity: number;
-};
-
-type Cart = {
-  items: CartItem[];
-  totalItems: number;
-};
+import { Cart, CartItem } from "../domain/cart/cart.types";
 
 export class CartService {
   createCart(): Cart {
