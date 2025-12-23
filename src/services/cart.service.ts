@@ -15,4 +15,13 @@ export class CartService {
             totalItems: 0
         };
     }
+
+    addItem(cart: Cart, item: CartItem): Cart {
+        const updatedItems = [...cart.items, item];
+
+        return {
+            items: updatedItems,
+            totalItems: cart.totalItems + item.quantity
+        };
+    }
 }
