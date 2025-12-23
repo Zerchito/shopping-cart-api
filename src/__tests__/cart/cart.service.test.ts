@@ -82,4 +82,30 @@ describe('CartService', () => {
       ).toThrow('Quantity must be greater than zero');
     });
   });
+
+  describe('CartService - remove item', () => {
+    it('should remove an item from the cart', () => {
+      const cartService = new CartService();
+      const cart = cartService.createCart();
+
+      const cartWithItems = cartService.addItem(cart, {
+        productId: 'product-1',
+        quantity: 3
+      });
+
+      const updatedCart = cartService.removeItem(cartWithItems, 'product-1');
+
+      expect(updatedCart.items).toEqual([]);
+      expect(updatedCart.totalItems).toBe(0);
+    });
+
+    it('should throw an error when removing a non-existing item', () => {
+      const cartService = new CartService();
+      const cart = cartService.createCart();
+
+      expect(() =>
+        cartService.removeItem(cart, 'product-1')
+      ).toThrow('Item not found in cart');
+    });
+  });
 })
