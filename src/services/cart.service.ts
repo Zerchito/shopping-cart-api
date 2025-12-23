@@ -43,3 +43,4 @@ export class CartService {
       totalItems: cart.totalItems + item.quantity
     };
   }
+}
