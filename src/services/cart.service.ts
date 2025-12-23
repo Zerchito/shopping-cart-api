@@ -1,4 +1,5 @@
 import { Cart, CartItem } from "../domain/cart/cart.types";
+import { calculateTotalItems } from "../domain/cart/cart.utils";
 import { InvalidQuantityError } from "../domain/cart/errors/invalid-quantity.error";
 import { ItemNotFoundError } from "../domain/cart/errors/item-not-found.error";
 
@@ -28,13 +29,15 @@ export class CartService {
 
       return {
         items: updatedItems,
-        totalItems: cart.totalItems + item.quantity
+        totalItems: calculateTotalItems(updatedItems)
       };
     }
 
+    const updatedItems = [...cart.items, item];
+
     return {
-      items: [...cart.items, item],
-      totalItems: cart.totalItems + item.quantity
+      items: updatedItems,
+      totalItems: calculateTotalItems(updatedItems)
     };
   }
 
@@ -53,7 +56,7 @@ export class CartService {
 
     return {
       items: updatedItems,
-      totalItems: cart.totalItems - itemToRemove.quantity
+      totalItems: calculateTotalItems(updatedItems)
     };
   }
 
@@ -80,14 +83,9 @@ export class CartService {
         : item
     );
 
-    const totalItems = updatedItems.reduce(
-      (sum, item) => sum + item.quantity,
-      0
-    );
-
     return {
       items: updatedItems,
-      totalItems
+      totalItems: calculateTotalItems(updatedItems)
     };
   }
 
