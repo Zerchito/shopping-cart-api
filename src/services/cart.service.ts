@@ -62,4 +62,45 @@ export class CartService {
       totalItems: cart.totalItems - itemToRemove.quantity
     };
   }
+
+  updateItemQuantity(
+    cart: Cart,
+    productId: string,
+    quantity: number
+  ): Cart {
+    if (quantity <= 0) {
+      throw new Error('Quantity must be greater than zero');
+    }
+
+    const existingItem = cart.items.find(
+      (item) => item.productId === productId
+    );
+
+    if (!existingItem) {
+      throw new Error('Item not found in cart');
+    }
+
+    const updatedItems = cart.items.map((item) =>
+      item.productId === productId
+        ? { ...item, quantity }
+        : item
+    );
+
+    const totalItems = updatedItems.reduce(
+      (sum, item) => sum + item.quantity,
+      0
+    );
+
+    return {
+      items: updatedItems,
+      totalItems
+    };
+  }
+
+  clearCart(cart: Cart): Cart {
+    return {
+      items: [],
+      totalItems: 0
+    };
+  }
 }
