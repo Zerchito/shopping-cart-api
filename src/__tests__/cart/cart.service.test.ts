@@ -1,10 +1,11 @@
 import { CartService } from '../../services/cart.service';
+import { FakeCartRepository } from '../fakes/fake-cart.repository';
 
 describe('CartService', () => {
 
   describe('CartService - create cart', () => {
     it('should create an empty cart', () => {
-      const cartService = new CartService();
+      const cartService = new CartService(new FakeCartRepository());
 
       const cart = cartService.createCart();
 
@@ -16,7 +17,7 @@ describe('CartService', () => {
 
   describe('CartService - add item', () => {
     it('should add an item to the cart', () => {
-      const cartService = new CartService();
+      const cartService = new CartService(new FakeCartRepository());
       const cart = cartService.createCart();
 
       const updatedCart = cartService.addItem(cart, {
@@ -35,7 +36,7 @@ describe('CartService', () => {
 
   describe('CartService - add same product twice', () => {
     it('should merge quantities when adding the same product', () => {
-      const cartService = new CartService();
+      const cartService = new CartService(new FakeCartRepository());
       const cart = cartService.createCart();
 
       const cartWithFirstItem = cartService.addItem(cart, {
@@ -59,7 +60,7 @@ describe('CartService', () => {
 
   describe('CartService - invalid quantities', () => {
     it('should throw an error when adding item with zero quantity', () => {
-      const cartService = new CartService();
+      const cartService = new CartService(new FakeCartRepository());
       const cart = cartService.createCart();
 
       expect(() =>
@@ -71,7 +72,7 @@ describe('CartService', () => {
     });
 
     it('should throw an error when adding item with negative quantity', () => {
-      const cartService = new CartService();
+      const cartService = new CartService(new FakeCartRepository());
       const cart = cartService.createCart();
 
       expect(() =>
@@ -85,7 +86,7 @@ describe('CartService', () => {
 
   describe('CartService - remove item', () => {
     it('should remove an item from the cart', () => {
-      const cartService = new CartService();
+      const cartService = new CartService(new FakeCartRepository());
       const cart = cartService.createCart();
 
       const cartWithItems = cartService.addItem(cart, {
@@ -100,7 +101,7 @@ describe('CartService', () => {
     });
 
     it('should throw an error when removing a non-existing item', () => {
-      const cartService = new CartService();
+      const cartService = new CartService(new FakeCartRepository());
       const cart = cartService.createCart();
 
       expect(() =>
@@ -111,7 +112,7 @@ describe('CartService', () => {
 
   describe('CartService - update item quantity', () => {
     it('should update the quantity of an existing item', () => {
-      const cartService = new CartService();
+      const cartService = new CartService(new FakeCartRepository());
       const cart = cartService.createCart();
 
       const cartWithItem = cartService.addItem(cart, {
@@ -132,7 +133,7 @@ describe('CartService', () => {
     });
 
     it('should throw an error when updating a non-existing item', () => {
-      const cartService = new CartService();
+      const cartService = new CartService(new FakeCartRepository());
       const cart = cartService.createCart();
 
       expect(() =>
@@ -141,7 +142,7 @@ describe('CartService', () => {
     });
 
     it('should throw an error when setting an invalid quantity', () => {
-      const cartService = new CartService();
+      const cartService = new CartService(new FakeCartRepository());
       const cart = cartService.createCart();
 
       const cartWithItem = cartService.addItem(cart, {
@@ -157,7 +158,7 @@ describe('CartService', () => {
 
   describe('CartService - clear cart', () => {
     it('should remove all items from the cart', () => {
-      const cartService = new CartService();
+      const cartService = new CartService(new FakeCartRepository());
       const cart = cartService.createCart();
 
       const cartWithItems = cartService.addItem(cart, {
