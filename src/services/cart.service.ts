@@ -1,9 +1,13 @@
+import { CartRepository } from "../domain/cart/cart.repository";
 import { Cart, CartItem } from "../domain/cart/cart.types";
 import { calculateTotalItems } from "../domain/cart/cart.utils";
 import { InvalidQuantityError } from "../domain/cart/errors/invalid-quantity.error";
 import { ItemNotFoundError } from "../domain/cart/errors/item-not-found.error";
 
 export class CartService {
+
+  constructor(private readonly cartRepository: CartRepository) { }
+
   createCart(): Cart {
     return {
       items: [],
@@ -94,5 +98,17 @@ export class CartService {
       items: [],
       totalItems: 0
     };
+  }
+
+  async saveCart(cart: Cart): Promise<Cart> {
+    return this.cartRepository.save(cart);
+  }
+
+  async getCartById(id: string): Promise<Cart | null> {
+    return this.cartRepository.findById(id);
+  }
+
+  async deleteCart(id: string): Promise<void> {
+    await this.cartRepository.deleteById(id);
   }
 }
