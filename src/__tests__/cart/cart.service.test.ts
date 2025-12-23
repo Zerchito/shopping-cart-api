@@ -2,58 +2,84 @@ import { CartService } from '../../services/cart.service';
 
 describe('CartService', () => {
 
-    describe('CartService - create cart', () => {
-        it('should create an empty cart', () => {
-            const cartService = new CartService();
+  describe('CartService - create cart', () => {
+    it('should create an empty cart', () => {
+      const cartService = new CartService();
 
-            const cart = cartService.createCart();
+      const cart = cartService.createCart();
 
-            expect(cart).toBeDefined();
-            expect(cart.items).toEqual([]);
-            expect(cart.totalItems).toBe(0);
-        });
+      expect(cart).toBeDefined();
+      expect(cart.items).toEqual([]);
+      expect(cart.totalItems).toBe(0);
+    });
+  });
+
+  describe('CartService - add item', () => {
+    it('should add an item to the cart', () => {
+      const cartService = new CartService();
+      const cart = cartService.createCart();
+
+      const updatedCart = cartService.addItem(cart, {
+        productId: 'product-1',
+        quantity: 2
+      });
+
+      expect(updatedCart.items.length).toBe(1);
+      expect(updatedCart.items[0]).toEqual({
+        productId: 'product-1',
+        quantity: 2
+      });
+      expect(updatedCart.totalItems).toBe(2);
+    });
+  });
+
+  describe('CartService - add same product twice', () => {
+    it('should merge quantities when adding the same product', () => {
+      const cartService = new CartService();
+      const cart = cartService.createCart();
+
+      const cartWithFirstItem = cartService.addItem(cart, {
+        productId: 'product-1',
+        quantity: 2
+      });
+
+      const updatedCart = cartService.addItem(cartWithFirstItem, {
+        productId: 'product-1',
+        quantity: 3
+      });
+
+      expect(updatedCart.items.length).toBe(1);
+      expect(updatedCart.items[0]).toEqual({
+        productId: 'product-1',
+        quantity: 5
+      });
+      expect(updatedCart.totalItems).toBe(5);
+    });
+  });
+
+  describe('CartService - invalid quantities', () => {
+    it('should throw an error when adding item with zero quantity', () => {
+      const cartService = new CartService();
+      const cart = cartService.createCart();
+
+      expect(() =>
+        cartService.addItem(cart, {
+          productId: 'product-1',
+          quantity: 0
+        })
+      ).toThrow('Quantity must be greater than zero');
     });
 
-    describe('CartService - add item', () => {
-        it('should add an item to the cart', () => {
-            const cartService = new CartService();
-            const cart = cartService.createCart();
+    it('should throw an error when adding item with negative quantity', () => {
+      const cartService = new CartService();
+      const cart = cartService.createCart();
 
-            const updatedCart = cartService.addItem(cart, {
-                productId: 'product-1',
-                quantity: 2
-            });
-
-            expect(updatedCart.items.length).toBe(1);
-            expect(updatedCart.items[0]).toEqual({
-                productId: 'product-1',
-                quantity: 2
-            });
-            expect(updatedCart.totalItems).toBe(2);
-        });
+      expect(() =>
+        cartService.addItem(cart, {
+          productId: 'product-1',
+          quantity: -2
+        })
+      ).toThrow('Quantity must be greater than zero');
     });
-
-    describe('CartService - add same product twice', () => {
-        it('should merge quantities when adding the same product', () => {
-            const cartService = new CartService();
-            const cart = cartService.createCart();
-
-            const cartWithFirstItem = cartService.addItem(cart, {
-                productId: 'product-1',
-                quantity: 2
-            });
-
-            const updatedCart = cartService.addItem(cartWithFirstItem, {
-                productId: 'product-1',
-                quantity: 3
-            });
-
-            expect(updatedCart.items.length).toBe(1);
-            expect(updatedCart.items[0]).toEqual({
-                productId: 'product-1',
-                quantity: 5
-            });
-            expect(updatedCart.totalItems).toBe(5);
-        });
-    });
+  });
 })
